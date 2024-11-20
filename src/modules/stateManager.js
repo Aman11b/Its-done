@@ -97,6 +97,18 @@ const createAppStateManager = () => {
             delete appState.todoCollection[todoId];
 
             return true;
+        },
+        getAllProjects(){
+            return appState.projectCollection;
+        },
+        getAllTodos(){
+            return appState.todoCollection;
+        },
+        cleanState(){
+            appState.projectCollection = {};
+            appState.todoCollection = {};
+            appState.projectTodoMapping = {};
+            return true;           
         }
     };
 };

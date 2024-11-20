@@ -15,7 +15,12 @@ const createStorageManager=()=>{
 
     const safeJsonStringify=(data)=>{
         try{
-            return JSON.stringify(data);
+            return JSON.stringify(data,(key,value)=>{
+                if(value instanceof Date){
+                    return value.toISOString();
+                }
+                return value;
+            });
         }catch (error) {
             console.error('JSON Stringify Error:', error.message);
             return null;
@@ -24,6 +29,73 @@ const createStorageManager=()=>{
 
     //public methods returned
     return{
+        saveAppState(stateManager){
+            try{
+
+                const appState={
+                    projects:Object.values(stateManager.getAllProjects()).map(project=>project.toJSON()),
+                    todos:Object.values(stateManager.getAllTodos()).map(todo=>todo.toJSON())
+                };
+
+                const jsonString=safeJsonStringify(appState);
+
+                if(jsonString){
+                    store.setItem('itsDoneAppState', jsonString);
+                    console.log('App state saved successfully');
+                    return true;
+                }
+                return false;
+            }catch(error){
+                console.error('App State Save Error:', error);
+                return false;
+            }
+        },
+
+        restoreAppState(stateManager){
+            try{
+                const storeState=store.getItem('itsDoneAppState');
+
+                if(!storeState){
+                    console.log('no saved state found');
+                    return false;
+                }
+
+                const parsedState=safeJsonParse(storeState);
+
+                if(!parsedState){
+                    console.log('failed to parse stored state');
+                    return false;
+                }
+
+                if(parsedState.projects){
+                    parsedState.projects.forEach(projectData=>{
+                        const project=stateManager.createProject({
+                            name:projectData.name,
+                            description:projectData.description,
+                            status:projectData.status
+                        });
+                        if(projectData.todos){
+                            projectData.todos.forEach(todoData=>{
+                                stateManager.createTodoForProject(project.getId(),{
+                                    title:todoData.title,
+                                    description:todoData.description,
+                                    dueDate:new Date(todoData.dueDate),
+                                    priority:todoData.priority
+                                });
+                            });
+                        }
+                    });
+
+                }
+
+                console.log('App state restored successfully');
+                return true;
+            }catch(error){
+                console.error('App State Restore Error:', error);
+                return false;                
+            }
+        },
+
         // save data to local storage
         save(key,data){
             if(!key){
