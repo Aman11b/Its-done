@@ -26,5 +26,10 @@ module.exports = {
     devServer: {
         static: './dist',
         open: true
+    },
+    resolve: {
+        fallback: {
+            "path": require.resolve("path-browserify")
+        }
     }
 };

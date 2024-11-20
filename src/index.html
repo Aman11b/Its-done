@@ -1,35 +1,35 @@
-<!-- src/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ItsDone - Your Minimal Todo App</title>
+    <title>ItsDone - Your Productivity Companion</title>
+    
+    <!-- Animation Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
 </head>
 <body>
     <div id="app">
         <!-- Splash Screen -->
-        <div id="splash-screen">
-            <h1 id="tagline">ItsDone</h1>
-        </div>
+        <section id="splash-screen" class="splash-container">
+            <div class="splash-content">
+                <h1 id="typed-title"></h1>
+            </div>
+        </section>
 
         <!-- Main Application Container -->
-        <div id="main-app" class="hidden">
-            <div class="sidebar">
-                <section class="todos-section">
-                    <h2>Todos</h2>
-                </section>
-                <section class="projects-section">
-                    <h2>Projects</h2>
-                </section>
+        <main id="main-app" class="hidden">
+            <!-- App Sections Will Be Dynamically Loaded -->
+            <div id="projects-section">
+                <h2>Your Projects</h2>
+                <!-- Projects will be dynamically added here -->
             </div>
-
-            <div class="workspace">
-                <div id="workspace-content">
-                    <h1>Welcome to ItsDone</h1>
-                </div>
+            <div id="todos-section">
+                <h2>Your Todos</h2>
+                <!-- Todos will be dynamically added here -->
             </div>
-        </div>
+        </main>
     </div>
 </body>
 </html>
