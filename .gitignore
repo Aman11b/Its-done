@@ -134,3 +134,11 @@ node_modules/
 dist/
 .DS_Store
 npm-debug.log
+
+
+
+node_modules/
+dist/
+.env
+.DS_Store
+npm-debug.log

@@ -1,0 +1,44 @@
+/* src/styles/styles.css */
+:root {
+    --primary-color: #f4f4f4;
+    --secondary-color: #333;
+    --accent-color: #6200ee;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-color);
+}
+
+#splash-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(45deg, #6200ee, #3700b3);
+    color: white;
+}
+
+#main-app {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.workspace {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: white;
+}
+
+.hidden {
+    display: none !important;
+}

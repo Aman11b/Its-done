@@ -1,12 +1,35 @@
-
+<!-- src/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Todo App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ItsDone - Your Minimal Todo App</title>
 </head>
 <body>
     <div id="app">
-        <h1>Todo App</h1>
+        <!-- Splash Screen -->
+        <div id="splash-screen">
+            <h1 id="tagline">ItsDone</h1>
+        </div>
+
+        <!-- Main Application Container -->
+        <div id="main-app" class="hidden">
+            <div class="sidebar">
+                <section class="todos-section">
+                    <h2>Todos</h2>
+                </section>
+                <section class="projects-section">
+                    <h2>Projects</h2>
+                </section>
+            </div>
+
+            <div class="workspace">
+                <div id="workspace-content">
+                    <h1>Welcome to ItsDone</h1>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

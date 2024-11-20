@@ -1,7 +1,13 @@
-import createProject from "./modules/projectFactory";
+import '../src/styles/styles.css';
+
 import createTodo from "./modules/todoFactory";
+import createProject from "./modules/projectFactory";
 import createStorageManager from "./modules/storageManager";
 import createAppStateManager from "./modules/stateManager";
+
+// Import animation libraries
+import Typed from 'typed.js';
+import { gsap } from 'gsap';
 
 // function testProjectCreation(){
 //     console.log('---------project creation test--------');
@@ -608,121 +614,160 @@ function testStateManagerBasics(){
 // }
 // testStatePersistence();//passed
 
-function integrationTesting(){
-    console.log('===== Comprehensive Project-Todo Integration Test =====');
+// function integrationTesting(){
+//     console.log('===== Comprehensive Project-Todo Integration Test =====');
 
-    // Create state and storage managers
-    const stateManager = createAppStateManager();
-    const storageManager = createStorageManager();
+//     // Create state and storage managers
+//     const stateManager = createAppStateManager();
+//     const storageManager = createStorageManager();
 
-        // Test 1: Create Multiple Projects with Varying Characteristics
-        console.log('\n1. Project Creation Scenarios');
+//         // Test 1: Create Multiple Projects with Varying Characteristics
+//         console.log('\n1. Project Creation Scenarios');
     
-        // Different types of projects
-        const webDevProject = stateManager.createProject({
-            name: 'Web Development Learning Path',
-            description: 'Comprehensive web development skills roadmap',
-            status: createProject.STATUS.ACTIVE
+//         // Different types of projects
+//         const webDevProject = stateManager.createProject({
+//             name: 'Web Development Learning Path',
+//             description: 'Comprehensive web development skills roadmap',
+//             status: createProject.STATUS.ACTIVE
+//         });
+    
+//         const personalProject = stateManager.createProject({
+//             name: 'Personal Growth',
+//             description: 'Personal development and learning goals',
+//             status: createProject.STATUS.ACTIVE
+//         });
+    
+//         const archivedProject = stateManager.createProject({
+//             name: 'Completed Courses',
+//             description: 'Archived learning achievements',
+//             status: createProject.STATUS.ARCHIVED
+//         });
+
+//     // Test 2: Create Todos with Complex Scenarios
+//     console.log('\n2. Todo Creation with Multiple Scenarios');
+    
+//     // Web Development Project Todos
+//     const javascriptTodo = stateManager.createTodoForProject(webDevProject.getId(), {
+//         title: 'Master JavaScript Fundamentals',
+//         description: 'Deep dive into core JavaScript concepts',
+//         dueDate: new Date('2024-12-30'),
+//         priority: createTodo.PRIORITY.HIGH
+//     });
+
+//     const reactTodo = stateManager.createTodoForProject(webDevProject.getId(), {
+//         title: 'Build React Application',
+//         description: 'Create a complex React project from scratch',
+//         dueDate: new Date('2024-11-25'),
+//         priority: createTodo.PRIORITY.MEDIUM
+//     });
+
+//     // Personal Growth Project Todos
+//     const readingTodo = stateManager.createTodoForProject(personalProject.getId(), {
+//         title: 'Read Technical Books',
+//         description: 'Complete reading list of top tech books',
+//         dueDate: new Date('2024-12-31'),
+//         priority: createTodo.PRIORITY.LOW
+//     });
+
+//      // Test 3: Advanced Project and Todo Interactions
+//     console.log('\n3. Project-Todo Relationship Verification');
+    
+//     // Verify project todos
+//     const webDevProjectTodos = stateManager.getProjectTodos(webDevProject.getId());
+//     const personalProjectTodos = stateManager.getProjectTodos(personalProject.getId());
+
+//     console.log('Web Development Project Todos:');
+//     webDevProjectTodos.forEach(todo => {
+//         console.log(`- ${todo.getTitle()} (Priority: ${todo.getPriority()})`);
+//         console.log(`  Due Date: ${todo.getDueDate()}`);
+//         console.log(`  Project ID: ${todo.getProjectId()}`);
+//     });
+
+//     console.log('\nPersonal Growth Project Todos:');
+//     personalProjectTodos.forEach(todo => {
+//         console.log(`- ${todo.getTitle()} (Priority: ${todo.getPriority()})`);
+//         console.log(`  Due Date: ${todo.getDueDate()}`);
+//         console.log(`  Project ID: ${todo.getProjectId()}`);
+//     });
+
+//     // Test 4: Todo Status Management
+//     console.log('\n4. Todo Status Management');
+    
+//     // Change todo status
+//     javascriptTodo.markComplete();
+    
+//     console.log('JavaScript Todo Status:', javascriptTodo.getStatus());
+
+//     // Test 5: Project Status Changes
+//     console.log('\n5. Project Status Changes');
+    
+//     webDevProject.changeStatus(createProject.STATUS.ARCHIVED);
+
+
+//     console.log('Web Dev Project Status:', webDevProject.getStatus());
+
+//     // Test 6: Persistence and Restoration
+//     console.log('\n6. State Persistence Test');
+    
+//     // Save application state
+//     const saveResult = storageManager.saveAppState(stateManager);
+//     console.log('State Save Result:', saveResult);
+
+//     // Clear current state
+//     stateManager.cleanState();
+
+//     // Restore state
+//     const restoreResult = storageManager.restoreAppState(stateManager);
+//     console.log('State Restore Result:', restoreResult);
+
+//     // Test 7: Advanced Querying
+//     console.log('\n7. Advanced Querying');
+    
+//     // Get all projects
+//     const allProjects = stateManager.getAllProjects();
+//     console.log('Total Projects:', Object.keys(allProjects).length);
+
+//     // Get all todos
+//     const allTodos = stateManager.getAllTodos();
+//     console.log('Total Todos:', Object.keys(allTodos).length);
+// }
+//integrationTesting();//passed
+
+
+
+// Splash Screen Logic
+function initSplashScreen() {
+    // Typewriter Effect
+    new Typed('#tagline', {
+        strings: ['ItsDone', 'Organize Your Thoughts', 'Transform Ideas'],
+        typeSpeed: 50,
+        backSpeed: 30,
+        loop: true
+    });
+
+    // GSAP Transition
+    setTimeout(() => {
+        gsap.to('#splash-screen', {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('main-app').classList.remove('hidden');
+                gsap.from('#main-app', { opacity: 0, duration: 1 });
+            }
         });
-    
-        const personalProject = stateManager.createProject({
-            name: 'Personal Growth',
-            description: 'Personal development and learning goals',
-            status: createProject.STATUS.ACTIVE
-        });
-    
-        const archivedProject = stateManager.createProject({
-            name: 'Completed Courses',
-            description: 'Archived learning achievements',
-            status: createProject.STATUS.ARCHIVED
-        });
-
-    // Test 2: Create Todos with Complex Scenarios
-    console.log('\n2. Todo Creation with Multiple Scenarios');
-    
-    // Web Development Project Todos
-    const javascriptTodo = stateManager.createTodoForProject(webDevProject.getId(), {
-        title: 'Master JavaScript Fundamentals',
-        description: 'Deep dive into core JavaScript concepts',
-        dueDate: new Date('2024-12-30'),
-        priority: createTodo.PRIORITY.HIGH
-    });
-
-    const reactTodo = stateManager.createTodoForProject(webDevProject.getId(), {
-        title: 'Build React Application',
-        description: 'Create a complex React project from scratch',
-        dueDate: new Date('2024-11-25'),
-        priority: createTodo.PRIORITY.MEDIUM
-    });
-
-    // Personal Growth Project Todos
-    const readingTodo = stateManager.createTodoForProject(personalProject.getId(), {
-        title: 'Read Technical Books',
-        description: 'Complete reading list of top tech books',
-        dueDate: new Date('2024-12-31'),
-        priority: createTodo.PRIORITY.LOW
-    });
-
-     // Test 3: Advanced Project and Todo Interactions
-    console.log('\n3. Project-Todo Relationship Verification');
-    
-    // Verify project todos
-    const webDevProjectTodos = stateManager.getProjectTodos(webDevProject.getId());
-    const personalProjectTodos = stateManager.getProjectTodos(personalProject.getId());
-
-    console.log('Web Development Project Todos:');
-    webDevProjectTodos.forEach(todo => {
-        console.log(`- ${todo.getTitle()} (Priority: ${todo.getPriority()})`);
-        console.log(`  Due Date: ${todo.getDueDate()}`);
-        console.log(`  Project ID: ${todo.getProjectId()}`);
-    });
-
-    console.log('\nPersonal Growth Project Todos:');
-    personalProjectTodos.forEach(todo => {
-        console.log(`- ${todo.getTitle()} (Priority: ${todo.getPriority()})`);
-        console.log(`  Due Date: ${todo.getDueDate()}`);
-        console.log(`  Project ID: ${todo.getProjectId()}`);
-    });
-
-    // Test 4: Todo Status Management
-    console.log('\n4. Todo Status Management');
-    
-    // Change todo status
-    javascriptTodo.markComplete();
-    
-    console.log('JavaScript Todo Status:', javascriptTodo.getStatus());
-
-    // Test 5: Project Status Changes
-    console.log('\n5. Project Status Changes');
-    
-    webDevProject.changeStatus(createProject.STATUS.ARCHIVED);
-
-
-    console.log('Web Dev Project Status:', webDevProject.getStatus());
-
-    // Test 6: Persistence and Restoration
-    console.log('\n6. State Persistence Test');
-    
-    // Save application state
-    const saveResult = storageManager.saveAppState(stateManager);
-    console.log('State Save Result:', saveResult);
-
-    // Clear current state
-    stateManager.cleanState();
-
-    // Restore state
-    const restoreResult = storageManager.restoreAppState(stateManager);
-    console.log('State Restore Result:', restoreResult);
-
-    // Test 7: Advanced Querying
-    console.log('\n7. Advanced Querying');
-    
-    // Get all projects
-    const allProjects = stateManager.getAllProjects();
-    console.log('Total Projects:', Object.keys(allProjects).length);
-
-    // Get all todos
-    const allTodos = stateManager.getAllTodos();
-    console.log('Total Todos:', Object.keys(allTodos).length);
+    }, 3000);
 }
-integrationTesting();//passed
+
+// Initialize Managers
+const stateManager = createAppStateManager();
+const storageManager = createStorageManager();
+
+// Initialize App
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Splash Screen
+    initSplashScreen();
+
+    // Optional: Restore previous state
+    storageManager.restoreAppState(stateManager);
+});
