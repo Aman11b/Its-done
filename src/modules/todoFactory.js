@@ -109,7 +109,8 @@ function createTodo({
     title,
     description='',
     dueDate,
-    priority=PRIORITY.MEDIUM
+    priority=PRIORITY.LOW,
+    projectId=null
 }){
     // VALIDATE INPUT
     const validateTitle=todoValidation.validateTitle(title);
@@ -124,6 +125,7 @@ function createTodo({
     let currentStatus=STATUS.PENDING;
     const createdAt=new Date();
     let completedAt=null;
+    let currentProjectId = projectId;
 
     return{
         // immutable getters
@@ -132,7 +134,7 @@ function createTodo({
         getDescription:()=>description,
         getDueDate:()=>format(validateDueDate,'PPP'),
         getPriority:()=>validatePriority,
-        getStatus:()=>currentState,
+        getStatus:()=>currentStatus,
         getCreatedAt:()=>format(createdAt,'PPP'),
 
         // mutable methods
@@ -144,6 +146,16 @@ function createTodo({
                 dueDate:validateDueDate,
                 priority:validatePriority
             });
+        },
+
+        // Existing methods
+        getProjectId() {
+            return currentProjectId;
+        },
+
+        setProjectId(newProjectId) {
+            currentProjectId = newProjectId;
+            return this;
         },
 
         markComplete(){

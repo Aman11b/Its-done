@@ -104,30 +104,20 @@ function createProject({
             // Return the current instance with updated status
             return this;
         },
-
-        // Getter for status to reflect current status
-        getStatus() {
-            return validatedStatus;
-        },
-
         addTodo(todo){
             if(!todo || typeof todo.getId!=='function'){
                 throw new Error ('Invalid todo object');
             }
-
-            const existingTodo=todoStorage.find(t=>t.getId()===todo.getId());
-
-            if(!existingTodo){
-                todoStorage.push(todo);
-            }
-
+            todo.setProjectId(this.getId());
+            todoStorage.push(todo);
             return this;
         },
         removeTodo(todoId){
             const index=todoStorage.findIndex(todo=>todo.getId()==todoId);
 
             if(index!==-1){
-                todoStorage.splice(index,1)
+                const removedTodo = todoStorage.splice(index, 1)[0];
+                removedTodo.setProjectId(null);
             }
             return this;
         },
@@ -139,6 +129,9 @@ function createProject({
         },
         getCompletedTodos(){
             return todoStorage.filter(todo=>todo.getStatus()==='completed');
+        },
+        hasTodo(todoId) {
+            return todoStorage.some(todo => todo.getId() === todoId);
         },
 
         toJSON(){
