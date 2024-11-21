@@ -1,9 +1,10 @@
-const PROJECT_STATUS={
-    ACTIVE:'active',
-    ARCHIVED:'archived'
+// src/modules/projectFactory.js
+const PROJECT_STATUS = {
+    ACTIVE: 'active',
+    ARCHIVED: 'archived'
 };
 
-const PROJECT_COLOR={
+const PROJECT_COLOR = {
     BLUE: '#3498db',
     GREEN: '#2ecc71',
     PURPLE: '#9b59b6',
@@ -12,139 +13,196 @@ const PROJECT_COLOR={
     TEAL: '#1abc9c'
 };
 
-// validation module
-const projectValidation={
+// Validation module
+const projectValidation = {
     /**
-     * 
-     * @param {string} name-project name 
+     * Validate project name
+     * @param {string} name - project name 
      * @returns {string} validated name
      */
-
-    validateName(name){
-        // type check
-        if(typeof name !=='string'){
-            throw new Error ('Project name must be string');
+    validateName(name) {
+        // Type check
+        if (typeof name !== 'string') {
+            throw new Error('Project name must be a string');
         }
 
-        const trimmedName=name.trim();
+        const trimmedName = name.trim();
 
-        if(trimmedName.length<2){
-            throw new Error ('Project name must be at least 2 character long');
+        if (trimmedName.length < 2) {
+            throw new Error('Project name must be at least 2 characters long');
         }
-
         
-        if(trimmedName.length>50){
-            throw new Error ('Project name cannot exceed 50 characters');
+        if (trimmedName.length > 50) {
+            throw new Error('Project name cannot exceed 50 characters');
         }
         return trimmedName;
     },
 
     /**
-     * 
-     * @param {string} status project status 
+     * Validate project status
+     * @param {string} status - project status 
      * @returns {string} validated status
      */
-
-    validateStatus(status){
-        if(!Object.values(PROJECT_STATUS).includes(status)){
+    validateStatus(status) {
+        if (!Object.values(PROJECT_STATUS).includes(status)) {
             throw new Error(`Invalid status. Must be one of: ${Object.values(PROJECT_STATUS).join(', ')}`);
         }
         return status;
+    },
+
+    /**
+     * Validate project description
+     * @param {string} description - project description
+     * @returns {string} validated description
+     */
+    validateDescription(description) {
+        if (description === undefined) return '';
+        
+        if (typeof description !== 'string') {
+            throw new Error('Project description must be a string');
+        }
+
+        return description.trim().slice(0, 200);
     }
 };
 
 /**
- * 
- * @param {Object} params -project creation parameters 
+ * Create a project instance
+ * @param {Object} params - project creation parameters 
  * @returns {Object} project instance
  */
-
-
 function createProject({
     name,
-    description='',
-    status=PROJECT_STATUS.ACTIVE
-}){
-    // VALIDATE INPUT
-    const validatedName=projectValidation.validateName(name);
+    description = '',
+    status = PROJECT_STATUS.ACTIVE,
+    color = null
+}) {
+    // Validate inputs
+    const validatedName = projectValidation.validateName(name);
+    const validatedDescription = projectValidation.validateDescription(description);
+    const validatedStatus = projectValidation.validateStatus(status);
 
-    // Create a closure variable to store status
-    let validatedStatus = projectValidation.validateStatus(status);
+    // Generate unique id
+    const id = `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // generate unique id
-    const id=`project_${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
+    // Create creation date
+    const createdAt = new Date();
 
-    // create certain date
-    const createdAt=new Date();
+    // Todo storage
+    const todoStorage = [];
 
-    // create todo storage
-    const todoStorage=[];
-
-    return{
-        getId(){
+    // Project instance
+    const projectInstance = {
+        // Getters
+        getId() {
             return id;
         },
 
-        getName(){
+        getName() {
             return validatedName;
         },
-        getDescription(){
-            return description
+
+        getDescription() {
+            return validatedDescription;
         },
-        getStatus(){
+
+        getStatus() {
             return validatedStatus;
         },
-        getCreatedAt(){
+
+        getCreatedAt() {
             return createdAt;
         },
-        changeStatus(newStatus) {
-            // Validate new status
-         validatedStatus = projectValidation.validateStatus(newStatus);
-            
-            // Return the current instance with updated status
-            return this;
-        },
-        addTodo(todo){
-            if(!todo || typeof todo.getId!=='function'){
-                throw new Error ('Invalid todo object');
-            }
-            todo.setProjectId(this.getId());
-            todoStorage.push(todo);
-            return this;
-        },
-        removeTodo(todoId){
-            const index=todoStorage.findIndex(todo=>todo.getId()==todoId);
 
-            if(index!==-1){
+        getColor() {
+            return color;
+        },
+
+        // Mutator methods
+        updateName(newName) {
+            return createProject({
+                name: newName,
+                description: validatedDescription,
+                status: validatedStatus,
+                color
+            });
+        },
+
+        updateDescription(newDescription) {
+            return createProject({
+                name: validatedName,
+                description: newDescription,
+                status: validatedStatus,
+                color
+            });
+        },
+
+        changeStatus(newStatus) {
+            return createProject({
+                name: validatedName,
+                description: validatedDescription,
+                status: newStatus,
+                color
+            });
+        },
+
+        // Todo management methods
+        addTodo(todo) {
+            if (!todo || typeof todo.getId !== 'function') {
+                throw new Error('Invalid todo object');
+            }
+            
+            // Set project ID for todo
+            todo.setProjectId(id);
+            
+            // Add to todo storage
+            todoStorage.push(todo);
+            
+            return this;
+        },
+
+        removeTodo(todoId) {
+            const index = todoStorage.findIndex(todo => todo.getId() === todoId);
+
+            if (index !== -1) {
                 const removedTodo = todoStorage.splice(index, 1)[0];
                 removedTodo.setProjectId(null);
             }
+            
             return this;
         },
-        getTodos(){
+
+        getTodos() {
             return [...todoStorage];
         },
-        getTotalTodos(){
+
+        getTotalTodos() {
             return todoStorage.length;
         },
-        getCompletedTodos(){
-            return todoStorage.filter(todo=>todo.getStatus()==='completed');
+
+        getCompletedTodos() {
+            return todoStorage.filter(todo => todo.getStatus() === 'completed');
         },
+
         hasTodo(todoId) {
             return todoStorage.some(todo => todo.getId() === todoId);
         },
 
-        toJSON(){
-            return{
+        // Serialization method
+        toJSON() {
+            return {
                 id,
-                name:validatedName,
-                description,
-                status:validatedStatus,
+                name: validatedName,
+                description: validatedDescription,
+                status: validatedStatus,
+                color,
                 createdAt,
-                todos:todoStorage.map(todo=>todo.toJSON())
+                todos: todoStorage.map(todo => todo.toJSON())
             };
         }
     };
+
+    return projectInstance;
 }
 
 // Attach constants to the factory

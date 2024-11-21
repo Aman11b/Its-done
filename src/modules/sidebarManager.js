@@ -1,13 +1,11 @@
-// src/modules/sidebarManager.js
-export function sidebarManager(stateManager) {
+function createSidebarManager(stateManager, contentManager) {
     const projectsBtn = document.getElementById('project-btn');
     const todosBtn = document.getElementById('todo-btn');
-    const statusButtons = document.querySelectorAll('.sidebar-status button');
     const addProjectBtn = document.getElementById('add-project-btn');
     const addTodoBtn = document.getElementById('add-todo-btn');
+    const contentHeader = document.querySelector('.content-header h1');
 
     function initialize() {
-        // Ensure buttons exist before adding event listeners
         if (projectsBtn) {
             projectsBtn.addEventListener('click', () => switchView('projects'));
         }
@@ -15,50 +13,40 @@ export function sidebarManager(stateManager) {
         if (todosBtn) {
             todosBtn.addEventListener('click', () => switchView('todos'));
         }
-        
-        statusButtons.forEach(button => {
-            button.addEventListener('click', handleStatusFilter);
-        });
 
-        // Initially hide add todo button
-        if (addTodoBtn) {
-            addTodoBtn.style.display = 'none';
-        }
+        switchView('projects');
     }
 
     function switchView(view) {
-        const contentHeader = document.querySelector('.content-header h1');
-        
-        if (view === 'projects') {
-            // Projects view
-            if (projectsBtn) projectsBtn.classList.add('active');
-            if (todosBtn) todosBtn.classList.remove('active');
-            
-            if (contentHeader) contentHeader.textContent = 'Projects';
-            
-            if (addProjectBtn) addProjectBtn.style.display = 'block';
-            if (addTodoBtn) addTodoBtn.style.display = 'none';
-        } else {
-            // Todos view
-            if (todosBtn) todosBtn.classList.add('active');
-            if (projectsBtn) projectsBtn.classList.remove('active');
-            
-            if (contentHeader) contentHeader.textContent = 'Todos';
-            
-            if (addProjectBtn) addProjectBtn.style.display = 'none';
-            if (addTodoBtn) addTodoBtn.style.display = 'block';
+        if (projectsBtn) {
+            projectsBtn.classList.toggle('active', view === 'projects');
         }
-    }
+        if (todosBtn) {
+            todosBtn.classList.toggle('active', view === 'todos');
+        }
 
-    function handleStatusFilter(event) {
-        const filterType = event.target.textContent;
-        console.log(`Filtering by: ${filterType}`);
-        // Implement actual filtering logic
+        if (contentHeader) {
+            contentHeader.textContent = view === 'projects' ? 'Projects' : 'Todos';
+        }
+
+        if (addProjectBtn) {
+            addProjectBtn.style.display = view === 'projects' ? 'block' : 'none';
+        }
+        if (addTodoBtn) {
+            addTodoBtn.style.display = view === 'todos' ? 'block' : 'none';
+        }
+
+        if (view === 'projects') {
+            contentManager.renderProjects();
+        } else {
+            contentManager.renderTodos();
+        }
     }
 
     return {
         initialize,
-        switchView,
-        handleStatusFilter
+        switchView
     };
 }
+
+export default createSidebarManager;

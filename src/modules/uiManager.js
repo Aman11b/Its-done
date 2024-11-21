@@ -1,28 +1,24 @@
-// src/modules/uiManager.js
-import createAppStateManager from './stateManager.js';
-import createStorageManager from './storageManager.js';
-import { sidebarManager } from './sidebarManager.js';
-import { contentManager } from './contentManager.js';
-import { overlayManager } from './overlayManager.js';
+import createAppStateManager from "./stateManager";
+import createStorageManager from "./storageManager";
+import createSidebarManager from "./sidebarManager";
+import createContentManager from "./contentManager";
+import { overlayManager } from "./overlayManager";
 
-export function createUIManager() {
-    // Core dependencies
+function createUIManager() {
     const stateManager = createAppStateManager();
     const storageManager = createStorageManager();
     
-    // UI Sub-managers
-    const sidebar = sidebarManager(stateManager);
-    const content = contentManager(stateManager);
-    const overlay = overlayManager(stateManager);
+    const contentManager = createContentManager(stateManager);
+    const sidebarManager = createSidebarManager(stateManager, contentManager);
+    const overlay = overlayManager(stateManager, contentManager);
 
     function init() {
-        // Initial setup
-        sidebar.initialize();
-        content.renderProjects();
-        overlay.setupEventListeners();
-        
-        // Restore previous state if exists
+        storageManager.initializeDefaultData(stateManager);
         storageManager.restoreAppState(stateManager);
+
+        sidebarManager.initialize();
+        contentManager.renderProjects();
+        overlay.setupEventListeners();
     }
 
     function saveAppState() {
@@ -33,8 +29,11 @@ export function createUIManager() {
         init,
         saveAppState,
         stateManager,
-        sidebar,
-        content,
+        storageManager,
+        sidebarManager,
+        contentManager,
         overlay
     };
 }
+
+export default createUIManager;
