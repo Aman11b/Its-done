@@ -31,18 +31,6 @@ Its Done is a powerful, lightweight project and todo management application buil
 - State Management
 - Local Storage Persistence
 
-## 📦 Installation
-
-## 🤝 Contributing
-Contributions are welcome! Please follow these steps:
-
-
-##  Connect With Me
-
--LinkedIn: Aman Singh
--Instagram: @tales.by.sunflower
--GitHub: @Aman11b
-
 ## 🙌 Acknowledgments
 
 date-fns for date manipulation
