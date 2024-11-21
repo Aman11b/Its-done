@@ -1,49 +1,40 @@
-import createAppStateManager from "./stateManager";
-import createStorageManager from "./storageManager";
+// src/modules/uiManager.js
+import createAppStateManager from './stateManager.js';
+import createStorageManager from './storageManager.js';
+import { sidebarManager } from './sidebarManager.js';
+import { contentManager } from './contentManager.js';
+import { overlayManager } from './overlayManager.js';
 
-export function createUIManager(){
+export function createUIManager() {
+    // Core dependencies
+    const stateManager = createAppStateManager();
+    const storageManager = createStorageManager();
+    
+    // UI Sub-managers
+    const sidebar = sidebarManager(stateManager);
+    const content = contentManager(stateManager);
+    const overlay = overlayManager(stateManager);
 
-    const stateManager=createAppStateManager();
-    const storageManager=createStorageManager();
-
-    function init(){
-        setupProjectButton();
-        setupTodoButton();
+    function init() {
+        // Initial setup
+        sidebar.initialize();
+        content.renderProjects();
+        overlay.setupEventListeners();
+        
+        // Restore previous state if exists
+        storageManager.restoreAppState(stateManager);
     }
 
-    function setupProjectButton(){
-        const addProjectBtn=document.getElementById('add-project-btn');
-        addProjectBtn.addEventListener('click',()=>{
-            console.log('project button clicked');
-        });
+    function saveAppState() {
+        storageManager.saveAppState(stateManager);
     }
 
-    function setupTodoButton(){
-        const addTodoBtn=document.getElementById('add-todo-btn');
-        addTodoBtn.addEventListener('click',()=>{
-            console.log('Todo button clicked');
-        });
-    }
-
-    function renderProjects(){
-        const contentArea=document.getElementById('content-area');
-        const projects=stateManager.getAllProjects();
-
-
-        contentArea.innerHTML='';
-
-        Object.values(projects).forEach(project=>{
-            const projectElement=document.createElement('div');
-            projectElement.classList.add('project-item');
-            projectElement.textContent=project.getName();
-            contentArea.appendChild(projectElement);
-        });
-    }
-
-    return{
+    return {
         init,
-        renderProjects,
+        saveAppState,
         stateManager,
-        stateManager
+        sidebar,
+        content,
+        overlay
     };
 }

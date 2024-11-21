@@ -1,11 +1,13 @@
+// src/index.js
+import { createUIManager } from './modules/uiManager.js';
 import './styles/styles.css';
-import { createUIManager } from './modules/uiManager';
 
-document.addEventListener('DOMContentLoaded',()=>{
-    const uiManager=createUIManager();
-
+document.addEventListener('DOMContentLoaded', () => {
+    const uiManager = createUIManager();
     uiManager.init();
 
-    uiManager.renderProjects();
-
+    // Optional: Save state before page unload
+    window.addEventListener('beforeunload', () => {
+        uiManager.saveAppState();
+    });
 });
