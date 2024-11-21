@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Its-Done</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script defer src="bundle.js"></script></head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-nav">
+                <button class="active" id="project-btn">Projects</button>
+                <button id="todo-btn">Todos</button>
+            </div>
+
+            <div class="sidebar-socials">
+                <a href="https://www.instagram.com/tales.by.sunflower/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title="Instagram Profile">
+                 <i class="fab fa-instagram"></i>
+             </a>
+             <a href="https://www.linkedin.com/in/aman-singh-120a76234/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title="LinkedIn Profile">
+                 <i class="fab fa-linkedin"></i>
+             </a>
+             <a href="https://github.com/Aman11b" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title="GitHub Profile">
+                 <i class="fab fa-github"></i>
+             </a>               
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Projects</h1>
+                <button class="add-button" id="add-project-btn">Add Project</button>
+                <button class="add-button" id="add-todo-btn" style="display:none;">Add Todo</button>
+            </div>
+            <div id="content-area">
+                <!-- dynamic content will render here -->
+            </div>
+        </div>
+
+        <!-- overlay for project/todo creation -->
+         <div class="overlay" id="creaion-overlay">
+            <div class="overlay-content">
+                <!-- dynamic form will be inserted here -->
+            </div>
+         </div>
+    </div>
+</body>
+</html>
