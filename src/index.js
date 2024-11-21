@@ -1,6 +1,11 @@
 import './styles/styles.css';
-import { initProjectCreation } from './modules/projectCreation';
+import { createUIManager } from './modules/uiManager';
 
 document.addEventListener('DOMContentLoaded',()=>{
-    initProjectCreation();
-})
+    const uiManager=createUIManager();
+
+    uiManager.init();
+
+    uiManager.renderProjects();
+
+});
