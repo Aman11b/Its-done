@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Its-Done</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Its Done</h1>
+            <p>Organize your project and todos</p>
+        </header>
+        <section class="project-creation-section">
+            <form id="project-creation-form" class="project-form">
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input 
+                        type="text"
+                        id="project-name"
+                        name="project-name"
+                        placeholder="Enter Project Name"
+                        required
+                        minlength="2"
+                        maxlength="50"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="project-description">
+                        Description (Option)
+                    </label>
+                    <textarea
+                        id="project-description"
+                        name="project-description"
+                        placeholder="Enter project Description"
+                        maxlength="200"
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Project</button>
+            </form>
+        </section>
+        <section class="project-list-section">
+            <h2>My Projects</h2>
+            <div id="project-list" class="project-grid">
+                <!-- project will be dynamically added here -->
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>
